@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:rs_task/model/hive_data_model/local_data_model.dart';
 import 'package:rs_task/services/get_data_service/get_data_service.dart';
-import 'package:rs_task/view/widgets/text_widget.dart';
 
 class HomeController extends ChangeNotifier {
   bool isLoading = false;
@@ -34,18 +32,13 @@ class HomeController extends ChangeNotifier {
   void fetchData(context) {
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
-      if (connectivityResult == ConnectivityResult.none) {
-        const TextWidget(name: "No Internet Connection");
-      } else {
-        getData(context);
-      }
+      getData(context);
     }
     notifyListeners();
   }
 
   Future<void> getData(context) async {
     if (isLoading || currentPage == -1) return;
-
     isLoading = true;
     notifyListeners();
     await GetDataService().getDataService(context).then(
