@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 import 'package:rs_task/controller/home_controller/home_controller.dart';
+import 'package:rs_task/model/hive_data_model/local_data_model.dart';
 import 'package:rs_task/utils/colors/colors.dart';
 import 'package:rs_task/view/home/home.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  if (!Hive.isAdapterRegistered(GetLocalDataModelAdapter().typeId)) {
+    Hive.registerAdapter(GetLocalDataModelAdapter());
+  }
   runApp(const MyApp());
 }
 
