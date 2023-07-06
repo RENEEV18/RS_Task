@@ -19,7 +19,7 @@ class GetLocalDataModelAdapter extends TypeAdapter<GetLocalDataModel> {
     return GetLocalDataModel(
       id: fields[0] as int,
       name: fields[1] as String,
-      description: fields[2] as String,
+      description: fields[2] as dynamic,
       watchersCount: fields[5] as int,
       language: fields[3] as dynamic,
       openIssuesCount: fields[4] as int,

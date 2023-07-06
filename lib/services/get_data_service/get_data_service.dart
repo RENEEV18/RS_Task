@@ -1,14 +1,15 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
-import 'package:rs_task/common/api/api_base_url.dart';
 import 'package:rs_task/model/hive_data_model/local_data_model.dart';
 import 'package:rs_task/utils/exceptions/dio_exceptions.dart';
 
 class GetDataService {
   Dio dio = Dio();
-  Future<List<GetLocalDataModel>?> getDataService(context) async {
+  Future<List<GetLocalDataModel>?> getDataService(context, page) async {
     try {
-      final Response response = await dio.get(ApiBaseUrl.baseUrl);
+      final Response response = await dio.get(
+          "https://api.github.com/users/JakeWharton/repos?page=$page&per_page=15");
+
       if (response.statusCode == 200 || response.statusCode == 201) {
         log(response.statusCode.toString());
         if (response.data == null) {

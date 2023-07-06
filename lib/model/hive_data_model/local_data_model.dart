@@ -8,7 +8,7 @@ class GetLocalDataModel {
   @HiveField(1)
   String name;
   @HiveField(2)
-  String description;
+  dynamic description;
   @HiveField(3)
   dynamic language;
   @HiveField(4)
@@ -27,12 +27,12 @@ class GetLocalDataModel {
 
   factory GetLocalDataModel.fromJson(Map<String, dynamic> json) =>
       GetLocalDataModel(
-        id: json["id"],
-        name: json["name"],
-        description: json["description"],
-        watchersCount: json["watchers_count"],
-        language: json["language"],
-        openIssuesCount: json["open_issues_count"],
+        id: json["id"] ?? [""],
+        name: json["name"] ?? [""],
+        description: json["description"] ?? [""],
+        watchersCount: json["watchers_count"] ?? [""],
+        language: json["language"] ?? [""],
+        openIssuesCount: json["open_issues_count"] ?? [""],
       );
 
   Map<String, dynamic> toJson() => {

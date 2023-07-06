@@ -17,7 +17,7 @@ class HomeController extends ChangeNotifier {
 
   List<GetLocalDataModel> gitList = [];
   List<GetLocalDataModel> localDataList = [];
-
+  List<String> noData = [" "];
   List<dynamic> itemList = [];
 
   ScrollController scrollController = ScrollController();
@@ -41,7 +41,7 @@ class HomeController extends ChangeNotifier {
     if (isLoading || currentPage == -1) return;
     isLoading = true;
     notifyListeners();
-    await GetDataService().getDataService(context).then(
+    await GetDataService().getDataService(context, currentPage).then(
       (value) {
         if (value != null) {
           gitList = value;
@@ -67,6 +67,7 @@ class HomeController extends ChangeNotifier {
   void saveData(List<GetLocalDataModel> apiData) async {
     final box = await Hive.openBox<GetLocalDataModel>('myBox');
     box.addAll(apiData);
+    // localDataList.clear();
     localDataList.addAll(apiData);
     log(localDataList.toString());
     retrieveData();
@@ -80,8 +81,8 @@ class HomeController extends ChangeNotifier {
         .map((hiveModel) => GetLocalDataModel(
             id: hiveModel.id,
             name: hiveModel.name,
-            description: hiveModel.description,
-            language: hiveModel.language,
+            description: hiveModel.description ?? "",
+            language: hiveModel.language ?? '',
             openIssuesCount: hiveModel.openIssuesCount,
             watchersCount: hiveModel.watchersCount))
         .toList();
@@ -91,6 +92,8 @@ class HomeController extends ChangeNotifier {
 
   void closeHiveBox() {
     Hive.box<GetLocalDataModel>('myBox').close();
+    localDataList.clear();
+    notifyListeners();
   }
 
   Future<void> checkConnectivity() async {
